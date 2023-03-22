@@ -1,8 +1,9 @@
-FROM openjdk:19-jdk-alpine
+FROM maven:3.8.1-openjdk-17-slim AS build
 
-ARG JAR_FILE=target/*.jar
-
-COPY ${JAR_FILE} hello-world.jar
+RUN mkdir /home/lwl
+copy . /home/lwl
+RUN cd /home/lwl && mvn package
+RUN cp /home/lwl/target/*.jar hello-world.jar
 
 ENTRYPOINT [ "java","-jar","hello-world.jar" ]
 
